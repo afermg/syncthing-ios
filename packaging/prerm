@@ -1,0 +1,13 @@
+#!/var/jb/bin/sh
+set -eu
+PATH=/var/jb/usr/bin:/var/jb/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH
+case "${1:-}" in
+    remove|deconfigure|upgrade)
+        plist=/var/jb/Library/LaunchDaemons/local.syncthing.ios.plist
+        if launchctl print system/local.syncthing.ios >/dev/null 2>&1; then
+            launchctl unload "$plist"
+        fi
+        ;;
+esac
+# Deliberately preserve configuration, device keys, database, logs, and user files.

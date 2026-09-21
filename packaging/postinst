@@ -1,0 +1,23 @@
+#!/var/jb/bin/sh
+set -eu
+PATH=/var/jb/usr/bin:/var/jb/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH
+case "${1:-}" in
+    configure)
+        # Fail before starting a service if the device cannot execute this build.
+        /var/jb/usr/bin/syncthing-ios --version
+        umask 077
+        mkdir -p /var/mobile/Library/Syncthing /var/mobile/Media/Syncthing
+        # Never recursively chown/chmod existing synced data.
+        chown mobile:mobile /var/mobile/Library/Syncthing /var/mobile/Media/Syncthing
+        chmod 700 /var/mobile/Library/Syncthing /var/mobile/Media/Syncthing
+        touch /var/mobile/Library/Syncthing/daemon.log
+        chown mobile:mobile /var/mobile/Library/Syncthing/daemon.log
+        chmod 600 /var/mobile/Library/Syncthing/daemon.log
+        plist=/var/jb/Library/LaunchDaemons/local.syncthing.ios.plist
+        launchctl unload "$plist" 2>/dev/null || true
+        launchctl load -w "$plist"
+        echo 'Syncthing launch requested. Open http://127.0.0.1:8384 in Safari on the iPad.'
+        echo 'Check daemon.log if the web page does not load; load success is not a health check.'
+        ;;
+esac

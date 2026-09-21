@@ -1,0 +1,11 @@
+#!/var/jb/bin/sh
+set -eu
+PATH=/var/jb/usr/bin:/var/jb/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH
+if [ "$(uname -s)" != Darwin ] || [ ! -d /var/jb ] || [ "$(dpkg --print-architecture)" != iphoneos-arm64 ]; then
+    echo 'Requires an active rootless iOS jailbreak with iphoneos-arm64 dpkg.' >&2
+    echo 'TrollStore alone, rootful jailbreaks, and RootHide are not supported by this package.' >&2
+    exit 1
+fi
+id mobile >/dev/null
+command -v launchctl >/dev/null

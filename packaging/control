@@ -1,0 +1,12 @@
+Package: local.syncthing.ios
+Name: Syncthing iOS Daemon (unofficial)
+Version: 2.1.5-1
+Architecture: iphoneos-arm64
+Section: Networking
+Priority: optional
+Maintainer: Local Builder
+Depends: firmware (>= 15.5)
+Homepage: https://syncthing.net/
+Description: Unofficial native Syncthing daemon for rootless jailbroken iOS
+ Runs as mobile with a localhost-only web UI on port 8384.
+ Requires an active rootless jailbreak, not just TrollStore.
